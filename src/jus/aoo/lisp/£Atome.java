@@ -2,6 +2,6 @@ package jus.aoo.lisp;
 
 public class £Atome implements Sexpr 
 {
-	public static int test;
+	public static int cc123;
 
 }
