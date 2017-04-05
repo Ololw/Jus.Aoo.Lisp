@@ -1,6 +1,9 @@
 options {  DEBUG_PARSER=false;  STATIC=false; } 
  
-PARSER_BEGIN(Reader) package jus.aoo.lisp ; 
+PARSER_BEGIN(Reader)
+
+package grammaire ;
+import jus.aoo.lisp;
  
 //<Section d’import> 
  
