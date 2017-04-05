@@ -5,7 +5,7 @@ import java.util.Map;
 public class Symbole extends £Atome
 {
 	private String symbole;
-	protected Map<String, Symbole> mem_sym;
+	static Map<String, Symbole> mem_sym;
 	
 	protected  Symbole(String ps)
 	{
