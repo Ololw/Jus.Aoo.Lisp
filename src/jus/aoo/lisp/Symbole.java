@@ -19,5 +19,3 @@ public class Symbole extends £Atome
 		}
 	}
 }
-
-salut
