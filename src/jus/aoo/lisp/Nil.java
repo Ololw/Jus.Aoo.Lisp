@@ -1,6 +1,6 @@
 package jus.aoo.lisp;
 
-public class Nil extends £Atome implements Liste
+public class Nil extends _Atome implements Liste
 {
 
 }

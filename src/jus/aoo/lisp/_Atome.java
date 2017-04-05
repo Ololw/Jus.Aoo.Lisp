@@ -1,6 +1,6 @@
 package jus.aoo.lisp;
 
-public class £Atome implements Sexpr 
+public class _Atome implements Sexpr 
 {
 	public static int test;
 
