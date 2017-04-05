@@ -2,7 +2,7 @@ package jus.aoo.lisp;
 
 import java.util.Map;
 
-public class Symbole extends £Atome
+public class Symbole extends ï¿½Atome
 {
 	private String symbole;
 	static Map<String, Symbole> mem_sym;
@@ -19,3 +19,4 @@ public class Symbole extends £Atome
 		}
 	}
 }
+ta mere la pute morat;
