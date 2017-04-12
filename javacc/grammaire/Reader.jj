@@ -7,8 +7,8 @@ options
 }
 
 PARSER_BEGIN(Reader)
-package lvm.grammar;
-import lvm.sexpr.*;
+package grammaire;
+import jus.aoo.lisp.sexpr.*;
 import java.util.LinkedList;
 
 public class Reader
