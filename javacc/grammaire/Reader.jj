@@ -1,67 +1,196 @@
-options {  DEBUG_PARSER=false;  STATIC=false; } 
- 
-PARSER_BEGIN(Reader)
-
-package grammaire ;
-import jus.aoo.lisp;
- 
-//<Section d’import> 
- 
-public class Reader
-{   
-	/** le support de lecture */
-	protected static java.io.Reader in = new BufferedReader(new InputStreamReader(System.in));
-
-	/** lecture d'une S-EXPR au terminal
-	* @return Sexpr : la Sexpr construite.
-	* @throws LispException une erreur de syntaxe
-	*/
-	public static Sexpr read() throws LispException{ … }  
-
-	/** lecture d'une S-EXPR à partir de la chaîne
-	* @param s : la chaîne
-	* @return Sexpr : la Sexpr construite.
-	* @throws LispException une  erreur de syntaxe
-	*/
-	public static Sexpr read(String s) throws LispException{ … }   
-
-	/** évaluation de la séquence S-EXPRs à partir du fichier s
-	* @param s : le nom du fichier
-	* @return Sexpr : symbole du nom du fichier.
-	* @throws LispException une erreur de lecture
-	*/
-	public static Sexpr importe(String s) throws LispException{ … }
-} 
- 
-PARSER_END(Reader)
-// les caractères ignorés
-SKIP :
-{   " " | "\t" | "\r"| "\n" // attention élimine la notion de fin de ligne
-	| "\u0000" | "\u0001" | "\u0002" | "\u0003" | "\u0004" | "\u0005" | "\u0006" | "\u0007"
-	| "\u0008" | "\u000B" | "\u000C" | "\u000E" | "\u000F" | "\u0010" | "\u0011" | "\u0012"
-	| "\u0013" | "\u0014" | "\u0015" | "\u0016" | "\u0017" | "\u0018" | "\u0019" | "\u001A"
-	| "\u001B" | "\u001C" | "\u001D" | "\u001E" | "\u001F" | "\u007F"
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = true;
 }
+
+PARSER_BEGIN(Reader)
+package lvm.grammar;
+import lvm.sexpr.*;
+import java.util.LinkedList;
+
+public class Reader
+{
+  public static void main(String args []) throws ParseException
+  {
+    Reader parser = new Reader(System.in);
+    while (true)
+    {
+      System.out.println("Reading from standard input...");
+      System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
+      try
+      {
+        SExpr sexp = Reader.SEXPRESSION();
+        System.out.println("sexp=" + sexp.toString());
+      }
+      catch (Exception e)
+      {
+        System.out.println("NOK.");
+        System.out.println(e.getMessage());
+        Reader.ReInit(System.in);
+      }
+      catch (Error e)
+      {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+        break;
+      }
+    }
+  }
+}
+
+PARSER_END(Reader)
+
+// les caractÃ¨res ignorÃ©s
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+| "\n"
+  // attention Ã©limine la notion de fin de ligne
+| ""
+| "\u0001"
+| "\u0002"
+| "\u0003"
+| "\u0004"
+| "\u0005"
+| "\u0006"
+| "\u0007"
+| "\u0008"
+| "\u000b"
+| "\u000c"
+| "\u000e"
+| "\u000f"
+| "\u0010"
+| "\u0011"
+| "\u0012"
+| "\u0013"
+| "\u0014"
+| "\u0015"
+| "\u0016"
+| "\u0017"
+| "\u0018"
+| "\u0019"
+| "\u001a"
+| "\u001b"
+| "\u001c"
+| "\u001d"
+| "\u001e"
+| "\u001f"
+| "\u007f"
+}
+
 MORE :
 {
-	"//" : IN_SL_COMMENT
-	| "/*" : IN_ML_COMMENT
+  "//" : IN_SL_COMMENT
+| "/*" : IN_ML_COMMENT
 }
-<IN_SL_COMMENT> SPECIAL_TOKEN :{<SL_COMMENT: "\n" | "\r" | "\r\n"> : DEFAULT}
-<IN_ML_COMMENT> SPECIAL_TOKEN :{<ML_COMMENT: "*/" > : DEFAULT}
-<IN_SL_COMMENT,IN_ML_COMMENT> SKIP :{< ~[] >}// les lexèmes du langage
+
+< IN_SL_COMMENT >
+SPECIAL_TOKEN :
+{
+  < SL_COMMENT :
+    "\n"
+  | "\r"
+  | "\r\n" > : DEFAULT
+}
+
+< IN_ML_COMMENT >
+SPECIAL_TOKEN :
+{
+  < ML_COMMENT : "*/" > : DEFAULT
+}
+
+< IN_SL_COMMENT, IN_ML_COMMENT >
+SKIP :
+{
+  < ~[ ] >
+} // les lexÃ¨mes du langage
+
+TOKEN : /* OPERATORS */
+{
+  < DOT : "." >
+| < LPAR : "(" >
+| < RPAR : ")" >
+| < NIL : "()" >
+| < QUOTE : "'" >
+| < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
+}
+
 TOKEN :
 {
-   Définir les lexèmes du langage
-} 
-// les règles de grammaire de ce langage
-Type1 SEXPRESSIONS() :
-{Type2 s1;}
-{
-	(s1=SEXPR(){…})* <EOF>
-	{
-		…
-	}
-	<EOF>
+  < SYMBOL :
+    (
+      < DIGIT >
+    | < LETTER >
+    | < SPECIAL >
+    )+ >
+| < #DIGIT : [ "0"-"9" ] >
+| < #LETTER : [ "A"-"Z", "a"-"z" ] >
+| < #SPECIAL : ~[ "0"-"9", "a"-"z", "A"-"Z", "|", "(", ")", "'", "`", ",", " ", "\u001f", "\u007f" ] >
+}
 
+SExpr SEXPRESSION() :
+{
+  SExpr sexp, l, r;
+  LinkedList < SExpr > list = new LinkedList();
+}
+{
+  sexp = ATOM()
+  {
+    System.out.println("atom=" + sexp.toString());
+    return sexp;
+  }
+| < LPAR > 
+  sexp = LIST() 
+  < RPAR >
+  {
+    return sexp;
+  }
+| < QUOTE > sexp = SEXPRESSION()
+  {
+    System.out.println("'atom='" + sexp.toString());
+    return SCons.quote(sexp);
+  }
+| < NIL >
+  {
+    return SExpr.NIL;
+  }
+}
+
+SExpr LIST() :
+{
+  SExpr s1, s2;
+}
+{
+  s1 = SEXPRESSION()
+  (
+    < DOT > s2 = SEXPRESSION()
+  | s2 = LIST()
+  )
+  {
+    return SCons.cons(s1, s2);
+  }
+|
+  {
+    return SExpr.NIL;
+  }
+}
+
+SExpr ATOM() :
+{
+  Token t;
+  String s;
+}
+{
+  t = < SYMBOL >
+  {
+    s = t.toString();
+    if (s.equals("nil")) 
+    return SExpr.NIL;	
+    return Symbol.newSymbol(t.toString());
+  }
 }
