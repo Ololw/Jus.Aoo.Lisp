@@ -14,7 +14,7 @@ public class Symbole extends _Atome
 			if (!(ps.contains("'") && ps.contains(" ") && ps.contains("(") && ps.contains(")")))
 			{
 				symbole = ps;
-				mem_sym.put(ps,this);
+				mem_sym.put(symbole,this);
 			}
 		}
 	}
