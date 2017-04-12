@@ -8,7 +8,7 @@ options
 
 PARSER_BEGIN(Reader)
 package grammaire;
-import jus.aoo.lisp.sexpr;
+import jus.aoo.lisp.Sexpr;
 import java.util.LinkedList;
 
 public class Reader

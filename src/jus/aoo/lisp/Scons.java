@@ -2,9 +2,10 @@ package jus.aoo.lisp;
 
 public class Scons implements Liste
 {
-	private Sexpr car,cdr;
+	private _Atome car;
+	private Sexpr cdr;
 	
-	public Sexpr CAR()
+	public _Atome CAR()
 	{
 		return car;
 	}
