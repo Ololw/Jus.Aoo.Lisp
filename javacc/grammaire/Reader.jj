@@ -150,14 +150,14 @@ Sexpr SEXPRESSION() :
   {
     return sexp;
   }
-| < QUOTE > sexp = SEXPRESSION()
+/*| < QUOTE > sexp = SEXPRESSION()
   {
     System.out.println("'atom='" + sexp.toString());
     return Scons.quote(sexp);
-  }
+  }*/
 | < NIL >
   {
-    return Sexpr.NIL;
+    return new Nil();
   }
 }
 
@@ -176,7 +176,7 @@ Sexpr LIST() :
   }
 |
   {
-    return Sexpr.NIL;
+    return new Nil();
   }
 }
 
@@ -190,7 +190,7 @@ Sexpr ATOM() :
   {
     s = t.toString();
     if (s.equals("nil")) 
-    return Sexpr.NIL;	
+    return new Nil();	
     return new Symbole(t.toString());
   }
 }

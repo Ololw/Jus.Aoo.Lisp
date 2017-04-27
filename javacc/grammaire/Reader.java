@@ -46,15 +46,9 @@ public class Reader implements ReaderConstants {
       jj_consume_token(RPAR);
     {if (true) return sexp;}
       break;
-    case QUOTE:
-      jj_consume_token(QUOTE);
-      sexp = SEXPRESSION();
-    System.out.println("'atom='" + sexp.toString());
-    {if (true) return Scons.quote(sexp);}
-      break;
     case NIL:
       jj_consume_token(NIL);
-    {if (true) return Sexpr.NIL;}
+    {if (true) return new Nil();}
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -69,7 +63,6 @@ public class Reader implements ReaderConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LPAR:
     case NIL:
-    case QUOTE:
     case SYMBOL:
       s1 = SEXPRESSION();
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -85,7 +78,7 @@ public class Reader implements ReaderConstants {
       break;
     default:
       jj_la1[2] = jj_gen;
-    {if (true) return Sexpr.NIL;}
+    {if (true) return new Nil();}
     }
     throw new Error("Missing return statement in function");
   }
@@ -96,7 +89,7 @@ public class Reader implements ReaderConstants {
     t = jj_consume_token(SYMBOL);
     s = t.toString();
     if (s.equals("nil"))
-    {if (true) return Sexpr.NIL;}
+    {if (true) return new Nil();}
     {if (true) return new Symbole(t.toString());}
     throw new Error("Missing return statement in function");
   }
@@ -122,7 +115,7 @@ public class Reader implements ReaderConstants {
       jj_la1_0 = new int[] {0x0,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x5a00,0x100,0x5a00,};
+      jj_la1_1 = new int[] {0x4a00,0x100,0x4a00,};
    }
 
   /** Constructor with InputStream. */
