@@ -8,7 +8,7 @@ options
 
 PARSER_BEGIN(Reader)
 package grammaire;
-import jus.aoo.lisp.Sexpr;
+import jus.aoo.lisp.*;
 import java.util.LinkedList;
 
 public class Reader
@@ -22,7 +22,7 @@ public class Reader
       System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
       try
       {
-        SExpr sexp = Reader.SEXPRESSION();
+        Sexpr sexp = Reader.SEXPRESSION();
         System.out.println("sexp=" + sexp.toString());
       }
       catch (Exception e)
@@ -133,10 +133,10 @@ TOKEN :
 | < #SPECIAL : ~[ "0"-"9", "a"-"z", "A"-"Z", "|", "(", ")", "'", "`", ",", " ", "\u001f", "\u007f" ] >
 }
 
-SExpr SEXPRESSION() :
+Sexpr SEXPRESSION() :
 {
-  SExpr sexp, l, r;
-  LinkedList < SExpr > list = new LinkedList();
+  Sexpr sexp, l, r;
+  LinkedList < Sexpr > list = new LinkedList();
 }
 {
   sexp = ATOM()
@@ -153,17 +153,17 @@ SExpr SEXPRESSION() :
 | < QUOTE > sexp = SEXPRESSION()
   {
     System.out.println("'atom='" + sexp.toString());
-    return SCons.quote(sexp);
+    return Scons.quote(sexp);
   }
 | < NIL >
   {
-    return SExpr.NIL;
+    return Sexpr.NIL;
   }
 }
 
-SExpr LIST() :
+Sexpr LIST() :
 {
-  SExpr s1, s2;
+  Sexpr s1, s2;
 }
 {
   s1 = SEXPRESSION()
@@ -172,15 +172,15 @@ SExpr LIST() :
   | s2 = LIST()
   )
   {
-    return SCons.cons(s1, s2);
+    return new Scons(s1, s2);
   }
 |
   {
-    return SExpr.NIL;
+    return Sexpr.NIL;
   }
 }
 
-SExpr ATOM() :
+Sexpr ATOM() :
 {
   Token t;
   String s;
@@ -190,7 +190,7 @@ SExpr ATOM() :
   {
     s = t.toString();
     if (s.equals("nil")) 
-    return SExpr.NIL;	
-    return Symbol.newSymbol(t.toString());
+    return Sexpr.NIL;	
+    return new Symbole(t.toString());
   }
 }

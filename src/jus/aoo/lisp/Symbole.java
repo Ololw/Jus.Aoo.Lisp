@@ -18,4 +18,17 @@ public class Symbole extends _Atome
 			}
 		}
 	}
+	
+	public Symbole  newSymbole(String ps)
+	{
+		if (!mem_sym.containsKey(ps))
+		{
+			if (!(ps.contains("'") && ps.contains(" ") && ps.contains("(") && ps.contains(")")))
+			{
+				symbole = ps;
+				mem_sym.put(symbole,this);
+			}
+		}
+		return this;
+	}
 }
