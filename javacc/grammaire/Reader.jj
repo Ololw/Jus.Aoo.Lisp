@@ -4,6 +4,7 @@
 options
 {
   static = true;
+//  debug_parser = true;
 }
 
 PARSER_BEGIN(Reader)
@@ -141,6 +142,7 @@ Sexpr SEXPRESSION() :
 {
   sexp = ATOM()
   {
+    System.out.println("ok SEXPRESSION()_ATOME");
     System.out.println("atom=" + sexp.toString());
     return sexp;
   }
@@ -188,9 +190,24 @@ Sexpr ATOM() :
 {
   t = < SYMBOL >
   {
+ //   System.out.println("ok SEXPRESSION()_ATOM()");
+    
     s = t.toString();
+    System.out.println(t.toString()+" depuis s");
+    
     if (s.equals("nil")) 
-    return new Nil();	
-    return new Symbole(t.toString());
+    	return new Nil();
+    	
+    System.out.println("Pas rentre dans if");
+    	
+    Symbole m = new Symbole(s);
+
+    System.out.println("Apres avoir cree m");
+    
+    System.out.println(m.toString());
+
+    System.out.println("juste avant le return");
+    	
+    return m;
   }
 }

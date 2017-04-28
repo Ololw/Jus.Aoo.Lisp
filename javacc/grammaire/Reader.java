@@ -37,6 +37,7 @@ public class Reader implements ReaderConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case SYMBOL:
       sexp = ATOM();
+    System.out.println("ok SEXPRESSION()_ATOME");
     System.out.println("atom=" + sexp.toString());
     {if (true) return sexp;}
       break;
@@ -87,10 +88,25 @@ public class Reader implements ReaderConstants {
   Token t;
   String s;
     t = jj_consume_token(SYMBOL);
+ //   System.out.println("ok SEXPRESSION()_ATOM()");
+
     s = t.toString();
+    System.out.println(t.toString()+" depuis s");
+
     if (s.equals("nil"))
-    {if (true) return new Nil();}
-    {if (true) return new Symbole(t.toString());}
+        {if (true) return new Nil();}
+
+    System.out.println("Pas rentre dans if");
+
+    Symbole m = new Symbole(s);
+
+    System.out.println("Apres avoir cree m");
+
+    System.out.println(m.toString());
+
+    System.out.println("juste avant le return");
+
+    {if (true) return m;}
     throw new Error("Missing return statement in function");
   }
 

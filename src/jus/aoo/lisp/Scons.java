@@ -21,6 +21,10 @@ public class Scons implements Liste
 		return cdr;
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+	    return (car.toString()+" "+cdr.toString());
+	}
 	
 }

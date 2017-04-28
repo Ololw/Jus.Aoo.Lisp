@@ -5,30 +5,20 @@ import java.util.Map;
 public class Symbole extends _Atome
 {
 	private String symbole;
-	static Map<String, Symbole> mem_sym;
+//	static Map<String, Symbole> mem_sym;
 	
 	public  Symbole(String ps)
 	{
-		if (!mem_sym.containsKey(ps))
-		{
-			if (!(ps.contains("'") && ps.contains(" ") && ps.contains("(") && ps.contains(")")))
-			{
-				symbole = ps;
-				mem_sym.put(symbole,this);
-			}
-		}
+//		if (!mem_sym.containsKey(ps))
+	//	{
+			symbole = ps;
+		//	mem_sym.put(symbole,this);
+	//	}
 	}
 	
-	public Symbole  newSymbole(String ps)
+	@Override
+	public String toString()
 	{
-		if (!mem_sym.containsKey(ps))
-		{
-			if (!(ps.contains("'") && ps.contains(" ") && ps.contains("(") && ps.contains(")")))
-			{
-				symbole = ps;
-				mem_sym.put(symbole,this);
-			}
-		}
-		return this;
+		return symbole;
 	}
 }
