@@ -4,7 +4,7 @@
 options
 {
   static = true;
-//  debug_parser = true;
+debug_parser = true;
 }
 
 PARSER_BEGIN(Reader)
@@ -26,6 +26,8 @@ public class Reader
       {
         Sexpr sexp = Reader.SEXPRESSION();
         System.out.println("sexp=" + sexp.toString());
+        //System.out.println(((Scons)sexp).toString());
+        
       }
       catch (Exception e)
       {
@@ -121,6 +123,7 @@ TOKEN : /* OPERATORS */
 | < QUOTE : "'" >
 | < CAR : "car" >
 | < CDR : "cdr" >
+//| < CONS : "cons" >
 | < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
 }
 
@@ -134,7 +137,8 @@ TOKEN :
     )+ >
 | < #DIGIT : [ "0"-"9" ] >
 | < #LETTER : [ "A"-"Z", "a"-"z" ] >
-| < #SPECIAL : ~[ "0"-"9", "a"-"z", "A"-"Z", "|", "(", ")", "'", "`", ",", " ", "\u001f", "\u007f" ] >
+| < #SPECIAL : ["#","_","-","@","!",":"] >
+// ~[ "0"-"9", "a"-"z", "A"-"Z", "|", "(", ")", "'", "`", ",", " ", "\u001f", "\u007f"]
 }
 
 Sexpr SEXPRESSION() :
@@ -149,15 +153,14 @@ Sexpr SEXPRESSION() :
     System.out.println("atom=" + sexp.toString());
     return sexp;
   }
-| < LPAR > 
-  sexp = LIST() 
-  < RPAR >
-  {
-    return sexp;
-  }
 | < NIL >
   {
     return new Nil();
+  }
+| < LPAR > 
+  sexp = LIST() 
+  {
+    return sexp;
   }
 }
 
@@ -170,6 +173,7 @@ Sexpr LIST() :
   (
     < DOT > s2 = SEXPRESSION()
   | s2 = LIST()
+  | < RPAR > { s2 = new Nil(); }
   )
   {
     return new Scons(s1, s2);
@@ -177,14 +181,16 @@ Sexpr LIST() :
 }
 
 
-Sexpr ATOME() :
+Sexpr ATOM() :
 {Token sym;} 
 { 	
 	< CAR > { return new Car(); }
 	| < CDR > { return new Cdr(); }
 	| < QUOTE > { return new Quote(); }
-	| < CONS > { return new Cons(); }
-	| sym = < SYMBOL > {return new Symbole(sym.image);}
+//	| < CONS > { return new Cons(); }
+	| sym = < SYMBOL > {
+		System.out.println("ok ta grand mere");
+	  return new Symbole(sym.image);}
 	  
 }
 

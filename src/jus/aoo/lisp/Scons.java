@@ -22,9 +22,23 @@ public class Scons implements Liste
 	}
 	
 	@Override
-	public String toString()
-	{
-	    return (car.toString()+" "+cdr.toString());
+	public String toString(){
+		if (cdr instanceof Nil) {
+			return "(".concat(car.toString()).concat(")");
+		}
+		else if (cdr instanceof Symbole) {
+			return "(".concat(car.toString()).concat(" . ").concat(cdr.toString()).concat(")");
+		}
+		return "(".concat(car.toString()).concat(" ").concat(afficher(((Scons)cdr)));
 	}
 	
+	public String afficher(Scons e) {
+		if (e.cdr instanceof Nil) {
+			return e.car.toString().concat(")");
+		}
+		else if (e.cdr instanceof Symbole) {
+			return "(".concat(e.car.toString()).concat(".").concat(e.cdr.toString()).concat(")");
+		}
+		return e.car.toString().concat(" ").concat(afficher(((Scons)e.cdr)));
+	} 
 }
