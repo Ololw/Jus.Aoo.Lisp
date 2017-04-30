@@ -155,11 +155,6 @@ Sexpr SEXPRESSION() :
   {
     return sexp;
   }
-/*| < QUOTE > sexp = SEXPRESSION()
-  {
-    System.out.println("'atom='" + sexp.toString());
-    return Scons.quote(sexp);
-  }*/
 | < NIL >
   {
     return new Nil();
@@ -179,50 +174,17 @@ Sexpr LIST() :
   {
     return new Scons(s1, s2);
   }
-|
-  {
-    return new Nil();
-  }
 }
 
-Sexpr ATOM() :
-{
-  Token t;
-  String s;
-}
-{
-  t = < SYMBOL >
-  {
- //   System.out.println("ok SEXPRESSION()_ATOM()");
-    
-    s = t.toString();
-    System.out.println(t.toString()+" depuis s");
-    
-    if (s.equals("nil")) 
-    	return new Nil();
-    	
-    System.out.println("Pas rentre dans if");
-    	
-    Symbole m = new Symbole(s);
 
-    System.out.println("Apres avoir cree m");
-    
-    System.out.println(m.toString());
-
-    System.out.println("juste avant le return");
-    	
-    return m;
-  }
-| < CAR > s = SEXPRESSION()
-	{
-	  //lol1
-	}
-| < CDR > s = SEXPRESSION()
-	{
-	  //lol2
-	}
-| < QUOTE > s = SEXPRESSION()
-	{
-	  //lol3
-	}
+Sexpr ATOME() :
+{Token sym;} 
+{ 	
+	< CAR > { return new Car(); }
+	| < CDR > { return new Cdr(); }
+	| < QUOTE > { return new Quote(); }
+	| < CONS > { return new Cons(); }
+	| sym = < SYMBOL > {return new Symbole(sym.image);}
+	  
 }
+
