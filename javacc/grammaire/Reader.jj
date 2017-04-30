@@ -16,6 +16,7 @@ public class Reader
 {
   public static void main(String args []) throws ParseException
   {
+    Symbole.init_mem();
     Reader parser = new Reader(System.in);
     while (true)
     {
@@ -118,6 +119,8 @@ TOKEN : /* OPERATORS */
 | < RPAR : ")" >
 | < NIL : "()" >
 | < QUOTE : "'" >
+| < CAR : "car" >
+| < CDR : "cdr" >
 | < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
 }
 
@@ -210,4 +213,16 @@ Sexpr ATOM() :
     	
     return m;
   }
+| < CAR > s = SEXPRESSION()
+	{
+	  //lol1
+	}
+| < CDR > s = SEXPRESSION()
+	{
+	  //lol2
+	}
+| < QUOTE > s = SEXPRESSION()
+	{
+	  //lol3
+	}
 }
