@@ -25,8 +25,9 @@ public class Reader
       try
       {
         Sexpr sexp = Reader.SEXPRESSION();
-        System.out.println("sexp=" + sexp.toString());
+        //System.out.println("sexp=" + sexp.toString());
         //System.out.println(((Scons)sexp).toString());
+        System.out.println(sexp.eval().toString());
         
       }
       catch (Exception e)
@@ -123,8 +124,12 @@ TOKEN : /* OPERATORS */
 | < QUOTE : "'" >
 | < CAR : "car" >
 | < CDR : "cdr" >
-//| < CONS : "cons" >
-| < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
+| < COND : "cond" >
+| < ATOME: "atome" >
+| < EQ : "eq" >
+| < SET : "set" >
+| < CONS : "cons" >
+//| < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
 }
 
 TOKEN :
@@ -187,7 +192,11 @@ Sexpr ATOM() :
 	< CAR > { return new Car(); }
 	| < CDR > { return new Cdr(); }
 	| < QUOTE > { return new Quote(); }
-//	| < CONS > { return new Cons(); }
+	| < CONS > { return new Cons(); }
+	| < COND > { return new Cons(); }
+	| < ATOME > { return new ATOME(); }
+	| < EQ > { return new Eq(); }
+	| < SET > { return new Set(); }
 	| sym = < SYMBOL > {
 		System.out.println("ok ta grand mere");
 	  return new Symbole(sym.image);}
