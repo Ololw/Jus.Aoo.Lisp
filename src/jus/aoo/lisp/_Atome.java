@@ -10,7 +10,7 @@ public class _Atome implements Sexpr
 	}
 	
 	public boolean EQ(Sexpr e){
-		return this.equals(e);
+		return this==(e);
 	}
 	
 	public Sexpr Cons(Sexpr e){

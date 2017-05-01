@@ -9,6 +9,6 @@ public class Quote extends Fsubr {
 	}
 	
 	public String toString(){
-		return "cdr";
+		return "quote";
 	}
 }

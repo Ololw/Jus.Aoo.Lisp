@@ -9,4 +9,6 @@ public class Nil extends _Atome implements Liste
 	{
 		return "Nil";
 	}
+	
+	
 }

@@ -16,9 +16,10 @@ public class Symbole extends _Atome
 	{
 		if (!mem_sym.containsKey(ps))
 		{
-			symbole = ps;
 			mem_sym.put(symbole,this);
 		}
+		symbole = ps;
+		
 	}
 	
 	@Override
@@ -26,4 +27,5 @@ public class Symbole extends _Atome
 	{
 		return symbole;
 	}
+	
 }
