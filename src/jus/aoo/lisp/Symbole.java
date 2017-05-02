@@ -1,25 +1,13 @@
 package jus.aoo.lisp;
 
-import java.util.HashMap;
 
-public class Symbole extends _Atome
+public class Symbole extends Atome
 {
 	private String symbole;
-	static HashMap<String, Symbole> mem_sym;
-	
-	public static void init_mem()
-	{
-		mem_sym = new HashMap<String,Symbole>();
-	}
 	
 	public  Symbole(String ps)
 	{
-		if (!mem_sym.containsKey(ps))
-		{
-			mem_sym.put(symbole,this);
-		}
-		symbole = ps;
-		
+		symbole = ps;	
 	}
 	
 	@Override
@@ -28,4 +16,18 @@ public class Symbole extends _Atome
 		return symbole;
 	}
 	
+	public I_Sexp eval()
+	{
+		I_Sexp val;
+		if (Contexte.EstDansContexte(symbole)) 
+		{
+			val = Contexte.get_value(symbole);
+			return val;
+		}
+		else
+		{
+			return this;
+		}
+		
+	}
 }

@@ -12,3 +12,25 @@
 hs_err_pid*
 
 *.prefs
+
+src_pp/lisp/grammar/ParseException\.java
+
+src_pp/lisp/grammar/SimpleCharStream\.java
+
+src_pp/lisp/grammar/Token\.java
+
+src_pp/lisp/grammar/TokenMgrError\.java
+
+javacc/grammaire/ParseException\.java
+
+javacc/grammaire/Reader\.java
+
+javacc/grammaire/ReaderConstants\.java
+
+javacc/grammaire/ReaderTokenManager\.java
+
+javacc/grammaire/SimpleCharStream\.java
+
+javacc/grammaire/Token\.java
+
+javacc/grammaire/TokenMgrError\.java

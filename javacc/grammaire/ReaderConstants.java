@@ -25,15 +25,37 @@ public interface ReaderConstants {
   /** RegularExpression Id. */
   int QUOTE = 44;
   /** RegularExpression Id. */
-  int NUM = 45;
+  int CAR = 45;
   /** RegularExpression Id. */
-  int SYMBOL = 46;
+  int CDR = 46;
   /** RegularExpression Id. */
-  int DIGIT = 47;
+  int COND = 47;
   /** RegularExpression Id. */
-  int LETTER = 48;
+  int ATOM = 48;
   /** RegularExpression Id. */
-  int SPECIAL = 49;
+  int EQ = 49;
+  /** RegularExpression Id. */
+  int SET = 50;
+  /** RegularExpression Id. */
+  int CONS = 51;
+  /** RegularExpression Id. */
+  int IMPLODE = 52;
+  /** RegularExpression Id. */
+  int EXPLODE = 53;
+  /** RegularExpression Id. */
+  int EVAL = 54;
+  /** RegularExpression Id. */
+  int APPLY = 55;
+  /** RegularExpression Id. */
+  int QUIT = 56;
+  /** RegularExpression Id. */
+  int SYMBOL = 57;
+  /** RegularExpression Id. */
+  int DIGIT = 58;
+  /** RegularExpression Id. */
+  int LETTER = 59;
+  /** RegularExpression Id. */
+  int SPECIAL = 60;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -89,7 +111,18 @@ public interface ReaderConstants {
     "\")\"",
     "\"()\"",
     "\"\\\'\"",
-    "<NUM>",
+    "\"car\"",
+    "\"cdr\"",
+    "\"cond\"",
+    "\"atom\"",
+    "\"eq\"",
+    "\"set\"",
+    "\"cons\"",
+    "\"implode\"",
+    "\"explode\"",
+    "\"eval\"",
+    "\"apply\"",
+    "\"quit\"",
     "<SYMBOL>",
     "<DIGIT>",
     "<LETTER>",

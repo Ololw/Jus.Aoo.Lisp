@@ -1,112 +1,96 @@
 package jus.aoo.lisp;
 
+import jus.aoo.lisp.Primitives.A_Primitive;
+import jus.aoo.lisp.Primitives.Quote;
+import jus.aoo.lisp.Primitives.Set;
 
-public class Scons implements Liste
+public class Scons implements I_Liste
 {
-	private Sexpr car;
-	private Sexpr cdr;
+	private I_Sexp car;
+	private I_Sexp cdr;
 	
-	public Scons(Sexpr psexpr1, Sexpr psexpr2)
+	public Scons(I_Sexp psexpr1, I_Sexp psexpr2)
 	{
 		car = psexpr1;
 		cdr = psexpr2;
 	}
 	
-	public Sexpr CAR()
+	public I_Sexp CAR()
 	{
 		return car;
 	}
 	
-	public Sexpr CDR()
+	public I_Sexp CDR()
 	{
 		return cdr;
 	}
 	
-	public boolean Atom() {return false;}
+	public boolean Atom() 
+	{
+	return false;
+	}
 	
-	public boolean EQ(Sexpr e) {
+	public boolean EQ(I_Sexp e) 
+	{
 		return this==(e);
 	}
 
 	
-	public Sexpr eval() throws LispException {
-		Evaluator evaluator;
-		Sexpr arg = cdr;
-		Sexpr fun = car;
-		//Sexpr param=null; // initialisation pour enlever erreur
-		//Sexpr forme=Nil.NIL; // initialisation pour enlever erreur
+	public I_Sexp eval() throws LispException 
+	{
+		I_Evaluator evaluator;
+		I_Sexp arg = cdr;
+		I_Sexp fun = car;
 		
-		if (fun instanceof _Atome){
+		if (fun instanceof Atome)
+		{
 		
-			if (fun instanceof Primitive)
-				evaluator =((Primitive) fun);
+			if (fun instanceof A_Primitive)
+				evaluator =((A_Primitive) fun);
+				
 			else if(fun instanceof Symbole)
 					return new Scons(((Symbole)fun).eval(),arg.eval());
 			
-			else //if(fun instanceof Nil){
+			else
 			
-				if(!(cdr instanceof Nil))	
+				if((cdr instanceof Scons))	
 					return new Scons(fun.eval(),arg.eval());
 				else
-					return fun.eval();
-			if (fun instanceof Quote)
+					return new Scons(fun.eval(),Nil.NIL);
+					
+			if (fun instanceof Quote || fun instanceof Set)// || fun instanceof Implode || fun instanceof Explode)
 				return evaluator.apply(arg);
 			else
 				return evaluator.apply(arg.eval());
-			
 		}
 		
-		else if(fun instanceof Scons ){
+		else if(fun instanceof Scons )
+		{
 			if(!(cdr instanceof Nil))	
 				return new Scons(fun.eval(),cdr.eval());
 			else
 				return fun.eval();
 		}
-		else {/*if(fun instanceof Nil)
-				return new Scons(fun.eval(),cdr.eval());*/
+		else 
+		{
 			System.out.println(fun.toString());
-			throw new LispException("pas un atome en premier");
+			throw new LispException("SCONS : Le premier argument n'est pas un atome");
 		}
+	}
 		
-	}
-	
-	/*public void associerContexte(Sexpr param,Sexpr arg) throws LispException{
-		if (param instanceof Scons && arg instanceof Scons){
-			Contexte.cont.ajouter(((Scons)param).car.toString(),((Scons)param).car); // vérifier qu'on a bien un Symbole à droite 
-			associerContexte(((Scons)param).cdr,((Scons)arg).cdr);
-		}    
-		else if (!(param instanceof Nil) || !(arg instanceof Nil))
-			throw new LispException("3");
-			
-	}*/
-	
-	public Scons evalListe () throws LispException{
-		if (cdr==Nil.NIL)
-			return new Scons(car.eval(),Nil.NIL);
-		else if (cdr instanceof Symbole)
-			throw new LispException("4");
-		else
-			return new Scons(car.eval(),((Scons)cdr).evalListe());
-	}
-	
-	public Scons evalListe2 () throws LispException{
-		if (cdr==Nil.NIL)
-			return new Scons(car,Nil.NIL);
-		else if (cdr instanceof Symbole)
-			throw new LispException("5");
-		else
-			return new Scons(car,((Scons)cdr).evalListe2());
-	}
-	
 	@Override
-	public String toString(){
-		if (cdr instanceof Nil) {
+	public String toString()
+	{
+		if (cdr instanceof Nil) 
+		{
 			return "(".concat(car.toString()).concat(")");
 		}
-		else if (cdr instanceof Symbole) {
+		else if (cdr instanceof Symbole) 
+		{
 			return "(".concat(car.toString()).concat(" . ").concat(cdr.toString()).concat(")");
 		}
-		return "(".concat(car.toString()).concat(" ").concat(afficher(((Scons)cdr)));
+		else 
+			return "(".concat(car.toString()).concat(" ").concat((afficher((Scons)cdr)));
 	}
 	
 	public String afficher(Scons e) {

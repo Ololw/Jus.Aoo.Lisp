@@ -4,41 +4,42 @@
 options
 {
   static = true;
-debug_parser = true;
+debug_parser = false;
 }
 
 PARSER_BEGIN(Reader)
 package grammaire;
 import jus.aoo.lisp.*;
+import jus.aoo.lisp.Primitives.*;
 import java.util.LinkedList;
 
 public class Reader
 {
-  public static void main(String args []) throws ParseException
+  public static void Parser() throws ParseException
   {
-    Symbole.init_mem();
+    Contexte.init_contexte();
     Reader parser = new Reader(System.in);
     while (true)
     {
-      System.out.println("Reading from standard input...");
-      System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
+      System.out.println("Lecture depuis la console..");
+      System.out.print("Rentrer une commande lisp :");
       try
       {
-        Sexpr sexp = Reader.SEXPRESSION();
-        //System.out.println("sexp=" + sexp.toString());
-        //System.out.println(((Scons)sexp).toString());
-        System.out.println(sexp.eval().toString());
+        I_Sexp sexp = Reader.SEXPRESSION();
+        System.out.println("Lecture : " + sexp.toString());
+        System.out.println("Evaluation : " + sexp.eval().toString());
+        System.out.println();
         
       }
       catch (Exception e)
       {
-        System.out.println("NOK.");
+        System.out.println("Exception relevee");
         System.out.println(e.getMessage());
         Reader.ReInit(System.in);
       }
       catch (Error e)
       {
-        System.out.println("Oops.");
+        System.out.println("Une erreur a ete detectee");
         System.out.println(e.getMessage());
         break;
       }
@@ -125,11 +126,15 @@ TOKEN : /* OPERATORS */
 | < CAR : "car" >
 | < CDR : "cdr" >
 | < COND : "cond" >
-| < ATOME: "atome" >
+| < ATOM: "atom" >
 | < EQ : "eq" >
 | < SET : "set" >
 | < CONS : "cons" >
-//| < NUM : ([ "+", "-" ])? (< DIGIT >)+ >
+| < IMPLODE : "implode" >
+| < EXPLODE : "explode" >
+| < EVAL : "eval" >
+| < APPLY : "apply" >
+| < QUIT : "quit" >
 }
 
 TOKEN :
@@ -142,20 +147,18 @@ TOKEN :
     )+ >
 | < #DIGIT : [ "0"-"9" ] >
 | < #LETTER : [ "A"-"Z", "a"-"z" ] >
-| < #SPECIAL : ["#","_","-","@","!",":"] >
-// ~[ "0"-"9", "a"-"z", "A"-"Z", "|", "(", ")", "'", "`", ",", " ", "\u001f", "\u007f"]
+| < #SPECIAL : ["#","_","-","@","!",":","$","£"] >
 }
 
-Sexpr SEXPRESSION() :
+I_Sexp SEXPRESSION() :
 {
-  Sexpr sexp, l, r;
-  LinkedList < Sexpr > list = new LinkedList();
+  I_Sexp sexp, l, r;
+  LinkedList < I_Sexp > list = new LinkedList();
 }
 {
   sexp = ATOM()
   {
-    System.out.println("ok SEXPRESSION()_ATOME");
-    System.out.println("atom=" + sexp.toString());
+    //System.out.println("atom=" + sexp.toString());
     return sexp;
   }
 | < NIL >
@@ -169,9 +172,9 @@ Sexpr SEXPRESSION() :
   }
 }
 
-Sexpr LIST() :
+I_Sexp LIST() :
 {
-  Sexpr s1, s2;
+  I_Sexp s1, s2;
 }
 {
   s1 = SEXPRESSION()
@@ -186,7 +189,7 @@ Sexpr LIST() :
 }
 
 
-Sexpr ATOM() :
+I_Sexp ATOM() :
 {Token sym;} 
 { 	
 	< CAR > { return new Car(); }
@@ -194,11 +197,17 @@ Sexpr ATOM() :
 	| < QUOTE > { return new Quote(); }
 	| < CONS > { return new Cons(); }
 	| < COND > { return new Cons(); }
-	| < ATOME > { return new ATOME(); }
+	| < ATOM > { return new Atom(); }
 	| < EQ > { return new Eq(); }
 	| < SET > { return new Set(); }
+	| < EVAL > { return new Eval(); }
+	| < APPLY > { return new Apply(); }
+	| < QUIT > {System.out.println("Au revoir");
+				Contexte.afficher();
+				System.exit(1); }
+	//| < IMPLODE > { return new Implode(); }
+	//| < EXPLODE > { return new Explode(); }
 	| sym = < SYMBOL > {
-		System.out.println("ok ta grand mere");
 	  return new Symbole(sym.image);}
 	  
 }
